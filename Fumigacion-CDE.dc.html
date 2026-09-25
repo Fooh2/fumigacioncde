@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<style>
+  html,body{margin:0;padding:0;background:#ffffff;scroll-behavior:smooth;}
+  html{scrollbar-width:thin;scrollbar-color:#0B5FD4 #EDF2FA;}
+  ::-webkit-scrollbar{width:11px;height:11px;}
+  ::-webkit-scrollbar-track{background:#EDF2FA;}
+  ::-webkit-scrollbar-thumb{background:#0B5FD4;border-radius:99px;border:3px solid #EDF2FA;}
+  ::-webkit-scrollbar-thumb:hover{background:#083F8F;}
+  ::selection{background:rgba(11,95,212,.2);color:#08152A;}
+  *{box-sizing:border-box;}
+  a{color:#0B5FD4;text-decoration:none;}
+  a:hover{color:#083F8F;}
+  @keyframes revealUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes popIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+  @keyframes slideStep{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+  @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(11,95,212,.35)}70%{box-shadow:0 0 0 16px rgba(11,95,212,0)}100%{box-shadow:0 0 0 0 rgba(11,95,212,0)}}
+  @keyframes spinSlow{to{transform:rotate(360deg)}}
+  @keyframes drawCheck{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+  @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+  img,svg{max-width:100%;}
+  button,a,input,select,textarea,summary{-webkit-tap-highlight-color:transparent;}
+  input,select,textarea{max-width:100%;}
+  [role="dialog"]{overscroll-behavior:contain;}
+  @media (max-width:640px){
+    input,select,textarea{font-size:16px;}
+    [role="dialog"]{padding:10px;}
+  }
+  @media (hover:none){
+    *:hover{transition-duration:.001s;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+    html{scroll-behavior:auto;}
+  }
+
+  @media (max-width:899px){ [data-nav-desktop]{display:none !important;} }
+  @media (min-width:900px){ [data-nav-mobile-btn]{display:none !important;} [data-nav-mobile-menu]{display:none !important;} }
+</style>
+</helmet>
+<div style="font-family:Montserrat,system-ui,sans-serif;color:#0C1B33;background:#ffffff;overflow-x:hidden">
+
+  <header style="position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid #E8EEF7">
+    <div style="max-width:1220px;margin:0 auto;padding:10px max(18px,env(safe-area-inset-left));display:flex;align-items:center;gap:16px">
+      <a href="#top" style="flex:0 0 auto;display:flex;align-items:center">
+        <img src="assets/logo-cde.jpeg" alt="Logo Fumigación CDE" style="height:54px;width:54px;border-radius:50%;object-fit:cover;display:block">
+      </a>
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <nav data-nav-desktop="1" style="display:flex;gap:26px;align-items:center;margin-left:auto">
+          <a href="#planes" style="font:600 13px Montserrat,sans-serif;color:#41577A;transition:color .2s" style-hover="color:#0B5FD4">Planes</a>
+          <a href="#como" style="font:600 13px Montserrat,sans-serif;color:#41577A;transition:color .2s" style-hover="color:#0B5FD4">Cómo funciona</a>
+          <a href="#plagas" style="font:600 13px Montserrat,sans-serif;color:#41577A;transition:color .2s" style-hover="color:#0B5FD4">Plagas</a>
+          <a href="#blog" style="font:600 13px Montserrat,sans-serif;color:#41577A;transition:color .2s" style-hover="color:#0B5FD4">Blog</a>
+          <a href="#faq" style="font:600 13px Montserrat,sans-serif;color:#41577A;transition:color .2s" style-hover="color:#0B5FD4">Preguntas</a>
+          <a href="Aegis-Care-Club.dc.html" style="font:600 12px Montserrat,sans-serif;color:#8A7231;letter-spacing:.04em;transition:color .2s" style-hover="color:#0C1B33">AEGIS Care Club</a>
+          <button type="button" onClick="{{ openInspection }}" style="display:flex;align-items:center;gap:8px;font:700 13px Montserrat,sans-serif;color:#fff;background:#0B5FD4;border:none;border-radius:999px;padding:12px 20px;cursor:pointer;min-height:44px;transition:transform .2s,background .2s" style-hover="background:#083F8F;transform:translateY(-1px)">
+            <i data-lucide="scan-search" width="16" height="16" stroke-width="2"></i>Inspección gratis
+          </button>
+        </nav>
+      </sc-if>
+      <sc-if value="{{ isMobile }}">
+        <button data-nav-mobile-btn="1" type="button" onClick="{{ toggleMenu }}" aria-label="Menú" style="margin-left:auto;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #DCE6F3;border-radius:12px;background:#fff;color:#0C1B33;cursor:pointer">
+          <i data-lucide="{{ menuIcon }}" width="20" height="20" stroke-width="2"></i>
+        </button>
+      </sc-if>
+    </div>
+    <sc-if value="{{ menuOpen }}">
+      <div style="border-top:1px solid #E8EEF7;background:#fff;padding:14px 18px 20px;animation:popIn .22s ease both">
+        <div style="display:grid;gap:4px">
+          <a href="#planes" onClick="{{ closeMenu }}" style="font:600 15px Montserrat,sans-serif;color:#0C1B33;padding:14px 4px;border-bottom:1px solid #F1F5FB">Planes</a>
+          <a href="#como" onClick="{{ closeMenu }}" style="font:600 15px Montserrat,sans-serif;color:#0C1B33;padding:14px 4px;border-bottom:1px solid #F1F5FB">Cómo funciona</a>
+          <a href="#plagas" onClick="{{ closeMenu }}" style="font:600 15px Montserrat,sans-serif;color:#0C1B33;padding:14px 4px;border-bottom:1px solid #F1F5FB">Plagas que controlamos</a>
+          <a href="#blog" onClick="{{ closeMenu }}" style="font:600 15px Montserrat,sans-serif;color:#0C1B33;padding:14px 4px;border-bottom:1px solid #F1F5FB">Blog técnico</a>
+          <a href="#faq" onClick="{{ closeMenu }}" style="font:600 15px Montserrat,sans-serif;color:#0C1B33;padding:14px 4px;border-bottom:1px solid #F1F5FB">Preguntas frecuentes</a>
+          <a href="Aegis-Care-Club.dc.html" style="font:600 15px Montserrat,sans-serif;color:#8A7231;padding:14px 4px">AEGIS Care Club</a>
+        </div>
+        <button type="button" onClick="{{ openInspection }}" style="width:100%;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;font:700 15px Montserrat,sans-serif;color:#fff;background:#0B5FD4;border:none;border-radius:14px;padding:16px;cursor:pointer;min-height:52px">
+          <i data-lucide="scan-search" width="18" height="18" stroke-width="2"></i>Solicitar inspección gratis
+        </button>
+      </div>
+    </sc-if>
+  </header>
+
+  <section id="top" style="position:relative;background:#08152A;color:#fff;overflow:hidden">
+    <img src="assets/cde-jardin.jpeg" alt="Técnico de Fumigación CDE inspeccionando el jardín de una residencia" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.38">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,#08152A 12%,rgba(8,21,42,.82) 55%,rgba(8,21,42,.45))"></div>
+    <div style="position:relative;max-width:1220px;margin:0 auto;padding:clamp(44px,6vw,76px) 18px clamp(28px,3vw,40px)">
+      <p style="margin:0 0 14px;display:inline-flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8FB6F0;animation:revealUp .5s ease both">
+        <i data-lucide="shield-check" width="15" height="15" stroke-width="2.2"></i>Protección 365 · Ciudad del Este
+      </p>
+      <h1 style="margin:0 0 16px;font:900 clamp(30px,5.2vw,56px)/1.04 Montserrat,sans-serif;letter-spacing:-.025em;max-width:20ch;animation:revealUp .6s ease .06s both;text-wrap:pretty">Tu casa, protegida las cuatro estaciones del año.</h1>
+      <p style="margin:0 0 26px;font:500 clamp(15px,1.4vw,18px)/1.55 Montserrat,sans-serif;color:#C6D6EE;max-width:44ch;animation:revealUp .6s ease .12s both">Cuatro aplicaciones preventivas al año, productos autorizados por Salud Pública y garantía de respuesta en 48 horas. Desde 200.000 Gs por mes.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;animation:revealUp .6s ease .18s both">
+        <a href="#planes" style="display:inline-flex;align-items:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#08152A;background:#fff;border-radius:999px;padding:16px 26px;min-height:52px;transition:transform .2s,box-shadow .2s" style-hover="transform:translateY(-2px);box-shadow:0 14px 34px rgba(0,0,0,.35)">
+          <i data-lucide="badge-dollar-sign" width="18" height="18" stroke-width="2"></i>Ver planes y precios
+        </a>
+        <button type="button" onClick="{{ openInspection }}" style="display:inline-flex;align-items:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.42);border-radius:999px;padding:16px 26px;min-height:52px;cursor:pointer;transition:background .2s" style-hover="background:rgba(255,255,255,.12)">
+          <i data-lucide="scan-search" width="18" height="18" stroke-width="2"></i>Inspección gratis
+        </button>
+      </div>
+    </div>
+    <div style="position:relative;border-top:1px solid rgba(255,255,255,.12)">
+      <div style="max-width:1220px;margin:0 auto;padding:16px 18px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">
+        <p style="margin:0;display:flex;gap:9px;align-items:center;font:600 13px Montserrat,sans-serif;color:#DCE7F7"><i data-lucide="calendar-check" width="17" height="17" stroke-width="2" style="color:#5A9BF5"></i>4 visitas al año</p>
+        <p style="margin:0;display:flex;gap:9px;align-items:center;font:600 13px Montserrat,sans-serif;color:#DCE7F7"><i data-lucide="stethoscope" width="17" height="17" stroke-width="2" style="color:#5FC79A"></i>Autorizado MSPyBS</p>
+        <p style="margin:0;display:flex;gap:9px;align-items:center;font:600 13px Montserrat,sans-serif;color:#DCE7F7"><i data-lucide="credit-card" width="17" height="17" stroke-width="2" style="color:#5A9BF5"></i>Pago seguro Bancard</p>
+        <p style="margin:0;display:flex;gap:9px;align-items:center;font:600 13px Montserrat,sans-serif;color:#DCE7F7"><i data-lucide="badge-check" width="17" height="17" stroke-width="2" style="color:#5FC79A"></i>Autorizado DIGESA</p>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ showClients }}" hint-placeholder-val="{{ true }}">
+  <section style="background:#F6F9FE;border-bottom:1px solid #E8EEF7;overflow:hidden">
+    <div style="max-width:1220px;margin:0 auto;padding:22px 18px 8px">
+      <p style="margin:0;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7A90B0"><i data-lucide="handshake" width="15" height="15" stroke-width="2"></i>Confían en nosotros</p>
+    </div>
+    <div style="padding:14px 0 26px;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)">
+      <div style="display:flex;gap:14px;width:max-content;animation:marquee 72s linear infinite">
+        <div style="display:flex;gap:14px">
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/neotelecom.png" alt="Neotelecom SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/biotec.png" alt="Biotec SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/cmp-agro.png" alt="CMP Agro SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/cellshop.png" alt="Cellshop" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/intershop.png" alt="Intershop" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/roma.png" alt="Shopping Roma" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/flavors.png" alt="Flavors of Americas" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/palladio.png" alt="Palladio Edificios" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/country-burger.png" alt="Country Burger" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/bancop.png" alt="Bancop SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/duo-santi.png" alt="Dúo Santi" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/feria-asuncion.png" alt="Feria Asunción SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/gonzalito.png" alt="Gonzalito" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/ibiza-mall.png" alt="Ibiza Mall" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/motorhaus.png" alt="Motorhaus" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/pandolfo.png" alt="Pandolfo" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/smart-fit.png" alt="Smart Fit SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/premier.png" alt="Premier Fitness Club CDE" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/matrisoja.png" alt="Matrisoja" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/vilux.png" alt="Vilux SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          
+          
+          
+          
+          
+        </div>
+        <div style="display:flex;gap:14px" aria-hidden="true">
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/neotelecom.png" alt="Neotelecom SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/biotec.png" alt="Biotec SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/cmp-agro.png" alt="CMP Agro SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/cellshop.png" alt="Cellshop" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/intershop.png" alt="Intershop" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/roma.png" alt="Shopping Roma" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/flavors.png" alt="Flavors of Americas" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/palladio.png" alt="Palladio Edificios" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/country-burger.png" alt="Country Burger" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/bancop.png" alt="Bancop SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/duo-santi.png" alt="Dúo Santi" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/feria-asuncion.png" alt="Feria Asunción SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/gonzalito.png" alt="Gonzalito" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/ibiza-mall.png" alt="Ibiza Mall" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/motorhaus.png" alt="Motorhaus" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/pandolfo.png" alt="Pandolfo" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/smart-fit.png" alt="Smart Fit SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/premier.png" alt="Premier Fitness Club CDE" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/matrisoja.png" alt="Matrisoja" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          <div style="display:flex;align-items:center;justify-content:center;height:78px;min-width:170px;padding:0 24px;border:1px solid #E6E6E6;border-radius:14px;background:#fff;flex:0 0 auto"><img src="assets/clients/vilux.png" alt="Vilux SA" style="max-height:46px;max-width:132px;width:auto;height:auto;object-fit:contain;display:block;opacity:.72"></div>
+          
+          
+          
+          
+          
+        </div>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <section id="planes" style="background:#fff">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(40px,5vw,72px) 18px clamp(28px,4vw,48px)">
+      <div data-reveal="1" style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;margin-bottom:26px">
+        <div>
+          <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#0B5FD4"><i data-lucide="layers" width="15" height="15" stroke-width="2.2"></i>Planes anuales</p>
+          <h2 style="margin:0;font:800 clamp(24px,3.2vw,38px)/1.1 Montserrat,sans-serif;letter-spacing:-.02em;max-width:22ch;text-wrap:pretty">Elegí tu plan y activalo hoy mismo</h2>
+        </div>
+        <div style="display:flex;gap:6px;padding:5px;border:1px solid #E2EAF6;border-radius:999px;background:#F6F9FE">
+          <button type="button" onClick="{{ scopeHome }}" style="font:700 12px Montserrat,sans-serif;border:none;border-radius:999px;padding:11px 18px;cursor:pointer;min-height:44px;transition:all .2s;background:{{ scopeHomeBg }};color:{{ scopeHomeColor }}">Hogar</button>
+          <button type="button" onClick="{{ scopeBiz }}" style="font:700 12px Montserrat,sans-serif;border:none;border-radius:999px;padding:11px 18px;cursor:pointer;min-height:44px;transition:all .2s;background:{{ scopeBizBg }};color:{{ scopeBizColor }}">Empresas</button>
+          <button type="button" onClick="{{ scopeAll }}" style="font:700 12px Montserrat,sans-serif;border:none;border-radius:999px;padding:11px 18px;cursor:pointer;min-height:44px;transition:all .2s;background:{{ scopeAllBg }};color:{{ scopeAllColor }}">Todos</button>
+        </div>
+      </div>
+
+      <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(288px,1fr));align-items:stretch">
+        <sc-if value="{{ showHome }}" hint-placeholder-val="{{ true }}">
+          <article data-reveal="1" style="display:flex;flex-direction:column;background:#fff;border:1px solid #E2EAF6;border-radius:20px;padding:26px;transition:transform .25s,box-shadow .25s" style-hover="transform:translateY(-6px);box-shadow:0 24px 50px rgba(9,40,85,.12)">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <span style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:#EEF4FF;color:#0B5FD4"><i data-lucide="home" width="20" height="20" stroke-width="2"></i></span>
+              <p style="margin:0;font:700 11px Montserrat,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#5A7296">Casas y departamentos</p>
+            </div>
+            <h3 style="margin:0 0 16px;font:800 20px Montserrat,sans-serif">Plan 1 · Escudo Residencial</h3>
+            <p style="margin:0;font:900 clamp(32px,3.4vw,42px)/1 Montserrat,sans-serif;color:#0C1B33;letter-spacing:-.02em">200.000 <span style="font:700 15px Montserrat,sans-serif;color:#5A7296">Gs / mes</span></p>
+            <p style="margin:8px 0 20px;display:inline-flex;align-items:center;gap:7px;font:600 12px Montserrat,sans-serif;color:#0B5FD4;background:#EEF4FF;border-radius:999px;padding:7px 12px;width:fit-content"><i data-lucide="coffee" width="14" height="14" stroke-width="2"></i>equivale a 6.600 Gs por día</p>
+            <ul style="margin:0 0 20px;padding:0;list-style:none;display:grid;gap:11px;flex:1 1 auto">
+              <li style="display:flex;gap:10px;font:500 14px/1.5 Montserrat,sans-serif"><i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#16794D;flex:0 0 auto"></i>4 aplicaciones preventivas al año</li>
+              <li style="display:flex;gap:10px;font:500 14px/1.5 Montserrat,sans-serif"><i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#16794D;flex:0 0 auto"></i>Moscas, mosquitos, arañas, hormigas, cucarachas y ALACRANES</li>
+              <li style="display:flex;gap:10px;font:500 14px/1.5 Montserrat,sans-serif"><i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#16794D;flex:0 0 auto"></i>Re-llamada en menos de 48 h sin costo</li>
+            </ul>
+            <button type="button" onClick="{{ buyPlan1 }}" style="display:flex;align-items:center;justify-content:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#0B5FD4;background:#fff;border:1.6px solid #0B5FD4;border-radius:14px;padding:15px;cursor:pointer;min-height:52px;transition:all .2s" style-hover="background:#0B5FD4;color:#fff">
+              <i data-lucide="credit-card" width="18" height="18" stroke-width="2"></i>Solicitar este plan
+            </button>
+          </article>
+
+          <article data-reveal="1" style="display:flex;flex-direction:column;background:#08152A;color:#fff;border:1px solid #0B5FD4;border-radius:20px;padding:26px;position:relative;box-shadow:0 26px 60px rgba(9,40,85,.22);transition:transform .25s" style-hover="transform:translateY(-8px)">
+            <span style="position:absolute;top:-13px;left:26px;display:inline-flex;align-items:center;gap:7px;font:800 10px Montserrat,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#08152A;background:#5FC79A;border-radius:999px;padding:8px 13px"><i data-lucide="star" width="13" height="13" stroke-width="2.4"></i>Más elegido</span>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <span style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.1);color:#8FB6F0"><i data-lucide="trees" width="20" height="20" stroke-width="2"></i></span>
+              <p style="margin:0;font:700 11px Montserrat,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A9C2E4">Residencias tipo country</p>
+            </div>
+            <h3 style="margin:0 0 16px;font:800 20px Montserrat,sans-serif">Plan 2 · Protección Country</h3>
+            <p style="margin:0;font:900 clamp(32px,3.4vw,42px)/1 Montserrat,sans-serif;letter-spacing:-.02em">300.000 <span style="font:700 15px Montserrat,sans-serif;color:#A9C2E4">Gs / mes</span></p>
+            <p style="margin:8px 0 20px;display:inline-flex;align-items:center;gap:7px;font:600 12px Montserrat,sans-serif;color:#08152A;background:#8FB6F0;border-radius:999px;padding:7px 12px;width:fit-content"><i data-lucide="coffee" width="14" height="14" stroke-width="2"></i>equivale a 10.000 Gs por día</p>
+            <ul style="margin:0 0 20px;padding:0;list-style:none;display:grid;gap:11px;flex:1 1 auto">
+              <li style="display:flex;gap:10px;font:500 14px/1.5 Montserrat,sans-serif;color:#DCE7F7"><i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#5FC79A;flex:0 0 auto"></i>Todo el Plan 1 + TERMITAS Y ROEDORES</li>
+              <li style="display:flex;gap:10px;font:500 14px/1.5 Montserrat,sans-serif;color:#DCE7F7"><i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#5FC79A;flex:0 0 auto"></i>Utilizamos cajas cebaderas externas</li>
+              <li style="display:flex;gap:10px;font:500 14px/1.5 Montserrat,sans-serif;color:#DCE7F7"><i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#5FC79A;flex:0 0 auto"></i>Barrera perimetral completa</li>
+            </ul>
+            <button type="button" onClick="{{ buyPlan2 }}" style="display:flex;align-items:center;justify-content:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#fff;background:#0B5FD4;border:none;border-radius:14px;padding:15px;cursor:pointer;min-height:52px;animation:pulseRing 2.8s ease-out infinite;transition:background .2s" style-hover="background:#2C7BEE">
+              <i data-lucide="credit-card" width="18" height="18" stroke-width="2"></i>Solicitar este plan
+            </button>
+          </article>
+        </sc-if>
+
+        <sc-if value="{{ showBiz }}" hint-placeholder-val="{{ true }}">
+          <article data-reveal="1" style="display:flex;flex-direction:column;background:#F6F9FE;border:1px solid #E2EAF6;border-radius:20px;padding:26px;transition:transform .25s,box-shadow .25s" style-hover="transform:translateY(-6px);box-shadow:0 24px 50px rgba(9,40,85,.12)">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <span style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:#E4EDF9;color:#41577A"><i data-lucide="building-2" width="20" height="20" stroke-width="2"></i></span>
+              <p style="margin:0;font:700 11px Montserrat,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#5A7296">Comercios e industrias</p>
+            </div>
+            <h3 style="margin:0 0 16px;font:800 20px Montserrat,sans-serif">Plan 3 · Empresas / Comercios</h3>
+            <p style="margin:0;font:900 clamp(26px,2.6vw,32px)/1.1 Montserrat,sans-serif;letter-spacing:-.02em">Sujeto a cotización</p>
+            <p style="margin:8px 0 20px;font:500 13px/1.5 Montserrat,sans-serif;color:#5A7296">El monto se define según rubro, metraje y frecuencia requerida por normativa.</p>
+            <ul style="margin:0 0 20px;padding:0;list-style:none;display:grid;gap:11px;flex:1 1 auto">
+              <li style="display:flex;gap:10px;font:500 14px/1.5 Montserrat,sans-serif"><i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#16794D;flex:0 0 auto"></i>Auditoría técnica en sitio sin cargo</li>
+              <li style="display:flex;gap:10px;font:500 14px/1.5 Montserrat,sans-serif"><i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#16794D;flex:0 0 auto"></i>Certificado y carpeta sanitaria para auditorías</li>
+              <li style="display:flex;gap:10px;font:500 14px/1.5 Montserrat,sans-serif"><i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#16794D;flex:0 0 auto"></i>Horarios que no interrumpen tu operación</li>
+            </ul>
+            <button type="button" onClick="{{ openEmpresa }}" style="display:flex;align-items:center;justify-content:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#fff;background:#0C1B33;border:none;border-radius:14px;padding:15px;cursor:pointer;min-height:52px;transition:background .2s" style-hover="background:#1B3054">
+              <i data-lucide="file-text" width="18" height="18" stroke-width="2"></i>Solicitar cotización
+            </button>
+          </article>
+        </sc-if>
+      </div>
+
+      <div data-reveal="1" style="margin-top:20px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+        <button type="button" onClick="{{ openInspection }}" style="display:flex;align-items:center;gap:14px;text-align:left;background:#fff;border:1.5px dashed #C3D6F0;border-radius:16px;padding:18px 20px;cursor:pointer;min-height:56px;transition:all .2s" style-hover="border-color:#0B5FD4;background:#F6F9FE">
+          <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:#EEF4FF;color:#0B5FD4;flex:0 0 auto"><i data-lucide="scan-search" width="21" height="21" stroke-width="2"></i></span>
+          <span>
+            <span style="display:block;font:700 15px Montserrat,sans-serif;color:#0C1B33">¿Todavía no sabés cuál elegir?</span>
+            <span style="display:block;font:500 13px Montserrat,sans-serif;color:#5A7296">Pedí la inspección gratuita de 8 puntos y te recomendamos el plan.</span>
+          </span>
+        </button>
+        <button type="button" onClick="{{ openPuntual }}" style="display:flex;align-items:center;gap:14px;text-align:left;background:#EAF7F0;border:1.5px solid #16794D;border-radius:16px;padding:18px 20px;cursor:pointer;min-height:56px;transition:all .2s;box-shadow:0 10px 26px rgba(22,121,77,.14)" style-hover="background:#DFF2E8;transform:translateY(-3px)">
+          <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:#16794D;color:#fff;flex:0 0 auto"><i data-lucide="zap" width="21" height="21" stroke-width="2"></i></span>
+          <span>
+            <span style="display:block;font:700 15px Montserrat,sans-serif;color:#0C1B33">Necesito un servicio ya, por única vez</span>
+            <span style="display:block;font:500 13px Montserrat,sans-serif;color:#5A7296">Servicio puntual sin plan: coordinamos la visita por WhatsApp.</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="como" style="background:#08152A;color:#fff">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(48px,6vw,88px) 18px">
+      <div data-reveal="1" style="margin-bottom:36px">
+        <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8FB6F0"><i data-lucide="route" width="15" height="15" stroke-width="2.2"></i>Cómo funciona</p>
+        <h2 style="margin:0;font:800 clamp(24px,3.2vw,38px)/1.12 Montserrat,sans-serif;letter-spacing:-.02em;max-width:24ch;text-wrap:pretty">De la suscripción al certificado, en cuatro pasos</h2>
+      </div>
+      <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+        <div data-reveal="1" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px;transition:background .25s" style-hover="background:rgba(255,255,255,.09)">
+          <span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:14px;background:#0B5FD4;color:#fff;margin-bottom:16px"><i data-lucide="credit-card" width="22" height="22" stroke-width="2"></i></span>
+          <p style="margin:0 0 6px;font:800 11px Montserrat,sans-serif;letter-spacing:.14em;color:#8FB6F0">PASO 01</p>
+          <h3 style="margin:0 0 8px;font:700 17px Montserrat,sans-serif">Suscripción segura</h3>
+          <p style="margin:0;font:500 14px/1.65 Montserrat,sans-serif;color:#B9C9E0">Adhesión en la pasarela de Bancard con tokenización PCI-DSS. El primer cobro es inmediato y los siguientes, automáticos.</p>
+        </div>
+        <div data-reveal="1" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px;transition:background .25s" style-hover="background:rgba(255,255,255,.09)">
+          <span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:14px;background:#0B5FD4;color:#fff;margin-bottom:16px"><i data-lucide="message-circle" width="22" height="22" stroke-width="2"></i></span>
+          <p style="margin:0 0 6px;font:800 11px Montserrat,sans-serif;letter-spacing:.14em;color:#8FB6F0">PASO 02</p>
+          <h3 style="margin:0 0 8px;font:700 17px Montserrat,sans-serif">Coordinación por WhatsApp</h3>
+          <p style="margin:0;font:500 14px/1.65 Montserrat,sans-serif;color:#B9C9E0">Te escribimos para agendar la primera visita y te enviamos el protocolo de preparación del hogar.</p>
+        </div>
+        <div data-reveal="1" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px;transition:background .25s" style-hover="background:rgba(255,255,255,.09)">
+          <span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:14px;background:#0B5FD4;color:#fff;margin-bottom:16px"><i data-lucide="spray-can" width="22" height="22" stroke-width="2"></i></span>
+          <p style="margin:0 0 6px;font:800 11px Montserrat,sans-serif;letter-spacing:.14em;color:#8FB6F0">PASO 03</p>
+          <h3 style="margin:0 0 8px;font:700 17px Montserrat,sans-serif">Servicio y certificado</h3>
+          <p style="margin:0;font:500 14px/1.65 Montserrat,sans-serif;color:#B9C9E0">Reciba su certificado de aplicación y pre-agende las próximas visitas.</p>
+        </div>
+        <div data-reveal="1" style="background:rgba(255,255,255,.05);border:1px solid rgba(95,199,154,.35);border-radius:18px;padding:24px;transition:background .25s" style-hover="background:rgba(95,199,154,.1)">
+          <span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:14px;background:#16794D;color:#fff;margin-bottom:16px"><i data-lucide="shield-check" width="22" height="22" stroke-width="2"></i></span>
+          <p style="margin:0 0 6px;font:800 11px Montserrat,sans-serif;letter-spacing:.14em;color:#5FC79A">PASO 04</p>
+          <h3 style="margin:0 0 8px;font:700 17px Montserrat,sans-serif">Garantía 365</h3>
+          <p style="margin:0;font:500 14px/1.65 Montserrat,sans-serif;color:#B9C9E0">Si aparece una urgencia entre estaciones, activás la garantía y vamos en menos de 48 horas sin costo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(48px,6vw,88px) 18px;display:grid;gap:clamp(28px,4vw,56px);grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:center">
+      <div data-reveal="1">
+        <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#0B5FD4"><i data-lucide="clipboard-check" width="15" height="15" stroke-width="2.2"></i>Inspección de 8 puntos</p>
+        <h2 style="margin:0 0 16px;font:800 clamp(23px,2.9vw,34px)/1.14 Montserrat,sans-serif;letter-spacing:-.02em;text-wrap:pretty">Un técnico revisa tu propiedad y te dice exactamente qué necesitás</h2>
+        <p style="margin:0 0 22px;font:500 15px/1.7 Montserrat,sans-serif;color:#4A6180;max-width:52ch">Nuestro exclusivo sistema de inspección de 8 puntos nos permite evaluar los riesgos en tu propiedad y enviarte una propuesta.</p>
+        <div style="display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:26px">
+          <p style="margin:0;display:flex;gap:8px;align-items:center;font:600 13px Montserrat,sans-serif;color:#2B4A76"><i data-lucide="file-check-2" width="16" height="16" stroke-width="2" style="color:#0B5FD4"></i>Informe en PDF</p>
+          <p style="margin:0;display:flex;gap:8px;align-items:center;font:600 13px Montserrat,sans-serif;color:#2B4A76"><i data-lucide="gauge" width="16" height="16" stroke-width="2" style="color:#0B5FD4"></i>Semáforo de riesgo</p>
+          <p style="margin:0;display:flex;gap:8px;align-items:center;font:600 13px Montserrat,sans-serif;color:#2B4A76"><i data-lucide="wallet-minimal" width="16" height="16" stroke-width="2" style="color:#0B5FD4"></i>Sin costo</p>
+        </div>
+        <button type="button" onClick="{{ openInspection }}" style="display:inline-flex;align-items:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#fff;background:#0B5FD4;border:none;border-radius:999px;padding:16px 26px;cursor:pointer;min-height:52px;transition:transform .2s,background .2s" style-hover="background:#083F8F;transform:translateY(-2px)">
+          <i data-lucide="scan-search" width="18" height="18" stroke-width="2"></i>Solicitar mi inspección gratis
+        </button>
+      </div>
+      <div data-reveal="1" style="position:relative">
+        <img src="assets/cde-piscina.jpeg" alt="Técnico de Fumigación CDE en área de piscina y jardín" style="width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:20px;display:block">
+        <div style="position:absolute;bottom:-18px;left:18px;right:18px;background:#fff;border:1px solid #E2EAF6;border-radius:16px;padding:16px 18px;box-shadow:0 18px 40px rgba(9,40,85,.14);display:flex;gap:12px;align-items:center;animation:floatY 5s ease-in-out infinite">
+          <span style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:11px;background:#EAF7F0;color:#16794D;flex:0 0 auto"><i data-lucide="badge-check" width="20" height="20" stroke-width="2"></i></span>
+          <p style="margin:0;font:600 13px/1.45 Montserrat,sans-serif;color:#0C1B33">Empresa habilitada por el MSPyBS · DIGESA</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#08152A;color:#fff">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(48px,6vw,88px) 18px">
+      <div data-reveal="1" style="margin-bottom:28px">
+        <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8FB6F0"><i data-lucide="images" width="15" height="15" stroke-width="2.2"></i>Dónde trabajamos</p>
+        <h2 style="margin:0;font:800 clamp(24px,3.2vw,36px)/1.12 Montserrat,sans-serif;letter-spacing:-.02em;max-width:24ch">Protocolos seguros y efectivos para cada tipo de cliente</h2>
+      </div>
+      <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+        <sc-for list="{{ gallery }}" as="g">
+          <figure data-reveal="1" style="margin:0;position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/3;background:#0F2242">
+            <div role="img" aria-label="{{ g.alt }}" style="width:100%;height:100%;background-size:cover;background-position:center;transition:transform .7s ease;background-image:{{ g.photoCss }}" style-hover="transform:scale(1.07)"></div>
+            <figcaption style="position:absolute;left:0;right:0;bottom:0;padding:36px 18px 16px;background:linear-gradient(transparent,rgba(6,15,30,.88));font:700 14px Montserrat,sans-serif;color:#fff">{{ g.label }}</figcaption>
+          </figure>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="plagas" style="background:#F6F9FE;border-top:1px solid #E8EEF7;border-bottom:1px solid #E8EEF7">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(48px,6vw,88px) 18px">
+      <div data-reveal="1" style="margin-bottom:30px">
+        <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#0B5FD4"><i data-lucide="bug" width="15" height="15" stroke-width="2.2"></i>Plagas urbanas</p>
+        <h2 style="margin:0;font:800 clamp(24px,3.2vw,36px)/1.12 Montserrat,sans-serif;letter-spacing:-.02em;max-width:24ch">Qué controlamos en Alto Paraná</h2>
+      </div>
+      <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(184px,1fr))">
+        <sc-for list="{{ pests }}" as="p" hint-placeholder-count="8">
+          <div data-reveal="1" style="background:#fff;border:1px solid #E2EAF6;border-radius:16px;padding:20px;transition:transform .2s,border-color .2s" style-hover="transform:translateY(-4px);border-color:#0B5FD4">
+            <span style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:#EEF4FF;color:#0B5FD4;margin-bottom:14px"><i data-lucide="{{ p.icon }}" width="20" height="20" stroke-width="2"></i></span>
+            <h3 style="margin:0 0 5px;font:700 15px Montserrat,sans-serif;color:#0C1B33">{{ p.name }}</h3>
+            <p style="margin:0;font:500 13px/1.5 Montserrat,sans-serif;color:#5A7296">{{ p.note }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(48px,6vw,88px) 18px">
+      <div data-reveal="1" style="margin-bottom:28px">
+        <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#0B5FD4"><i data-lucide="scale" width="15" height="15" stroke-width="2.2"></i>Preventivo vs. reactivo</p>
+        <h2 style="margin:0 0 12px;font:800 clamp(24px,3.2vw,36px)/1.12 Montserrat,sans-serif;letter-spacing:-.02em;max-width:26ch;text-wrap:pretty">Fumigar cuando ya viste la plaga es llegar tarde</h2>
+        <p style="margin:0;font:500 15px/1.7 Montserrat,sans-serif;color:#4A6180;max-width:64ch">Las intervenciones de emergencia ocurren cuando la plaga ya anidó: obligan a aplicaciones de choque y a gastos imprevistos.</p>
+      </div>
+      <div style="display:grid;gap:12px">
+        <div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+          <span></span>
+          <p style="margin:0;display:flex;align-items:center;gap:9px;font:800 12px Montserrat,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8A5A5A;background:#F7F8FA;border-radius:14px;padding:14px 18px"><i data-lucide="x" width="15" height="15" stroke-width="2.8"></i>Enfoque reactivo</p>
+          <p style="margin:0;display:flex;align-items:center;gap:9px;font:800 12px Montserrat,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:#0B5FD4;border-radius:14px;padding:14px 18px"><i data-lucide="check" width="15" height="15" stroke-width="2.8"></i>Enfoque preventivo</p>
+        </div>
+        <sc-for list="{{ compareRows }}" as="row" hint-placeholder-count="5">
+          <div data-reveal="1" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));align-items:stretch">
+            <p style="margin:0;display:flex;align-items:center;font:800 14px Montserrat,sans-serif;color:#0C1B33;padding:14px 2px">{{ row.criterio }}</p>
+            <div style="background:#F7F8FA;border-radius:14px;padding:16px 18px;display:flex;gap:10px">
+              <i data-lucide="x" width="17" height="17" stroke-width="2.6" style="color:#B24A4A;flex:0 0 auto;margin-top:2px"></i>
+              <p style="margin:0;font:500 14px/1.6 Montserrat,sans-serif;color:#6B7A8F">{{ row.tradicional }}</p>
+            </div>
+            <div style="background:#EEF4FF;border:1px solid #D6E6FC;border-radius:14px;padding:16px 18px;display:flex;gap:10px">
+              <i data-lucide="check" width="17" height="17" stroke-width="2.6" style="color:#0B5FD4;flex:0 0 auto;margin-top:2px"></i>
+              <p style="margin:0;font:600 14px/1.6 Montserrat,sans-serif;color:#123E7F">{{ row.sistema }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#F6F9FE;border-top:1px solid #E8EEF7;border-bottom:1px solid #E8EEF7">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(48px,6vw,88px) 18px">
+      <div data-reveal="1" style="margin-bottom:28px">
+        <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#0B5FD4"><i data-lucide="quote" width="15" height="15" stroke-width="2.2"></i>Clientes del sistema 365</p>
+        <h2 style="margin:0;font:800 clamp(24px,3.2vw,36px)/1.12 Montserrat,sans-serif;letter-spacing:-.02em;max-width:24ch">Lo que dicen las familias y comercios</h2>
+      </div>
+      <div style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:stretch">
+        <sc-for list="{{ reviews }}" as="r">
+          <article data-reveal="1" style="display:flex;flex-direction:column;background:#fff;border:1px solid #E2EAF6;border-radius:20px;padding:26px;transition:transform .25s,box-shadow .25s" style-hover="transform:translateY(-5px);box-shadow:0 20px 44px rgba(9,40,85,.1)">
+            <div style="display:flex;gap:3px;margin-bottom:14px">
+              <i data-lucide="star" width="16" height="16" stroke-width="2.4" style="color:#E8B931;fill:#E8B931"></i>
+              <i data-lucide="star" width="16" height="16" stroke-width="2.4" style="color:#E8B931;fill:#E8B931"></i>
+              <i data-lucide="star" width="16" height="16" stroke-width="2.4" style="color:#E8B931;fill:#E8B931"></i>
+              <i data-lucide="star" width="16" height="16" stroke-width="2.4" style="color:#E8B931;fill:#E8B931"></i>
+              <i data-lucide="star" width="16" height="16" stroke-width="2.4" style="color:#E8B931;fill:#E8B931"></i>
+            </div>
+            <p style="margin:0 0 20px;font:500 14px/1.75 Montserrat,sans-serif;color:#26364F;flex:1 1 auto">{{ r.text }}</p>
+            <div style="display:flex;gap:12px;align-items:center;border-top:1px solid #EEF3FA;padding-top:16px">
+              <span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:#0B5FD4;color:#fff;font:700 15px Montserrat,sans-serif;letter-spacing:.02em;flex:0 0 auto">{{ r.initials }}</span>
+              <div>
+                <p style="margin:0;font:700 13px Montserrat,sans-serif;color:#0C1B33">{{ r.name }}</p>
+                <p style="margin:0;font:500 12px Montserrat,sans-serif;color:#5A7296">{{ r.meta }}</p>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+
+      <a data-reveal="1" href="https://www.google.com/maps/place/Fumigacion+CDE/@-25.5191748,-54.6461915,17z/data=!3m1!4b1!4m6!3m5!1s0x94f68f729381331b:0xac61bfc59bf4675a!8m2!3d-25.5191748!4d-54.6461915!16s%2Fg%2F11s_zx483d!18m1!1e1" style="margin-top:16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:space-between;background:#08152A;border-radius:20px;padding:24px 26px;transition:transform .25s" style-hover="transform:translateY(-4px)">
+        <div style="display:flex;gap:16px;align-items:center">
+          <span style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.1);color:#fff;flex:0 0 auto"><i data-lucide="map-pin" width="23" height="23" stroke-width="2"></i></span>
+          <div>
+            <p style="margin:0;font:700 16px Montserrat,sans-serif;color:#fff">Leé todas las reseñas en Google</p>
+            <p style="margin:4px 0 0;font:500 13px Montserrat,sans-serif;color:#A9C2E4">Perfil verificado de Fumigación CDE · Ciudad del Este</p>
+          </div>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:9px;font:700 14px Montserrat,sans-serif;color:#08152A;background:#fff;border-radius:999px;padding:14px 22px;min-height:48px">Ver en Google Maps<i data-lucide="external-link" width="17" height="17" stroke-width="2"></i></span>
+      </a>
+    </div>
+  </section>
+
+  <section style="background:#fff">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(48px,6vw,88px) 18px;display:grid;gap:clamp(26px,4vw,52px);grid-template-columns:repeat(auto-fit,minmax(290px,1fr));align-items:center">
+      <div data-reveal="1">
+        <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#0B5FD4"><i data-lucide="map-pin" width="15" height="15" stroke-width="2.2"></i>Zona de cobertura</p>
+        <h2 style="margin:0 0 16px;font:800 clamp(23px,2.9vw,34px)/1.14 Montserrat,sans-serif;letter-spacing:-.02em;max-width:22ch">Operamos en Ciudad del Este, Hernandarias, Presidente Franco y Minga Guazú</h2>
+        <p style="margin:0 0 22px;font:500 15px/1.7 Montserrat,sans-serif;color:#4A6180;max-width:50ch">Equipos propios con base en Ciudad del Este. Si tu zona no figura en la lista, escribinos por WhatsApp y confirmamos disponibilidad.</p>
+        <div style="display:flex;gap:9px;flex-wrap:wrap">
+          <sc-for list="{{ zones }}" as="z" hint-placeholder-count="8">
+            <span style="display:inline-flex;align-items:center;gap:7px;font:600 13px Montserrat,sans-serif;color:#2B4A76;background:#F6F9FE;border:1px solid #E2EAF6;border-radius:999px;padding:10px 15px"><i data-lucide="check" width="14" height="14" stroke-width="2.6" style="color:#16794D"></i>{{ z }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div data-reveal="1" style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">
+        <div style="background:#08152A;color:#fff;border-radius:20px;padding:24px">
+          <p style="margin:0;font:900 clamp(28px,3vw,36px)/1 Montserrat,sans-serif;letter-spacing:-.02em">+12</p>
+          <p style="margin:8px 0 0;font:600 13px/1.5 Montserrat,sans-serif;color:#A9C2E4">años controlando plagas urbanas en la región</p>
+        </div>
+        <div style="background:#EEF4FF;border:1px solid #D6E6FC;border-radius:20px;padding:24px">
+          <p style="margin:0;font:900 clamp(28px,3vw,36px)/1 Montserrat,sans-serif;color:#0B5FD4;letter-spacing:-.02em">48 h</p>
+          <p style="margin:8px 0 0;font:600 13px/1.5 Montserrat,sans-serif;color:#2B4A76">respuesta máxima ante urgencias de miembros</p>
+        </div>
+        <div style="background:#EAF7F0;border:1px solid #C8E8D6;border-radius:20px;padding:24px">
+          <p style="margin:0;font:900 clamp(28px,3vw,36px)/1 Montserrat,sans-serif;color:#16794D;letter-spacing:-.02em">4×</p>
+          <p style="margin:8px 0 0;font:600 13px/1.5 Montserrat,sans-serif;color:#1B5C3D">aplicaciones al año incluidas en cada plan</p>
+        </div>
+        <div style="background:#F6F9FE;border:1px solid #E2EAF6;border-radius:20px;padding:24px">
+          <p style="margin:0;font:900 clamp(28px,3vw,36px)/1 Montserrat,sans-serif;color:#0C1B33;letter-spacing:-.02em">100%</p>
+          <p style="margin:8px 0 0;font:600 13px/1.5 Montserrat,sans-serif;color:#41577A">productos autorizados por el MSPyBS</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;background:#08101F;color:#fff;overflow:hidden;border-bottom:1px solid rgba(212,175,55,.28)">
+    <img src="assets/cde-country.jpeg" alt="Equipo de Fumigación CDE en club de campo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.22">
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,#08101F 20%,rgba(8,16,31,.7))"></div>
+    <div style="position:relative;max-width:1220px;margin:0 auto;padding:clamp(44px,5vw,76px) 18px;display:grid;gap:26px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:center">
+      <div data-reveal="1">
+        <p style="margin:0 0 14px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#D4AF37"><i data-lucide="crown" width="15" height="15" stroke-width="2.2"></i>Círculo privado</p>
+        <h2 style="margin:0 0 12px;font:700 clamp(22px,2.8vw,32px)/1.2 Montserrat,sans-serif;letter-spacing:-.015em;max-width:24ch;text-wrap:pretty">¿Su residencia exige un estándar superior?</h2>
+        <p style="margin:0;font:500 15px/1.7 Montserrat,sans-serif;color:#B9C6D8;max-width:50ch">AEGIS Care Club: membresía privada de bioseguridad ambiental para las propiedades más destacadas de Ciudad del Este. Acceso por postulación.</p>
+      </div>
+      <div data-reveal="1" style="display:flex;justify-content:flex-start">
+        <a href="Aegis-Care-Club.dc.html" style="display:inline-flex;align-items:center;gap:10px;font:700 14px Montserrat,sans-serif;color:#08101F;background:#D4AF37;border-radius:999px;padding:17px 28px;min-height:52px;transition:transform .2s,background .2s" style-hover="background:#E9CE86;transform:translateY(-2px)">
+          Conocer AEGIS Care Club<i data-lucide="arrow-right" width="18" height="18" stroke-width="2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="blog" style="background:#F6F9FE;border-top:1px solid #E8EEF7;border-bottom:1px solid #E8EEF7">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(48px,6vw,88px) 18px">
+      <div data-reveal="1" style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;margin-bottom:28px">
+        <div>
+          <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#0B5FD4"><i data-lucide="book-open" width="15" height="15" stroke-width="2.2"></i>Blog técnico</p>
+          <h2 style="margin:0;font:800 clamp(24px,3.2vw,36px)/1.12 Montserrat,sans-serif;letter-spacing:-.02em;max-width:24ch">Consejos de nuestros técnicos</h2>
+        </div>
+        <button type="button" onClick="{{ openBlog }}" style="display:inline-flex;align-items:center;gap:9px;font:700 14px Montserrat,sans-serif;color:#0B5FD4;background:#fff;border:1.5px solid #C3D6F0;border-radius:999px;padding:14px 22px;cursor:pointer;min-height:48px;transition:all .2s" style-hover="border-color:#0B5FD4;background:#EEF4FF">
+          Ver todo el blog<i data-lucide="arrow-right" width="17" height="17" stroke-width="2"></i>
+        </button>
+      </div>
+      <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+        <sc-for list="{{ posts }}" as="b">
+          <article data-reveal="1" style="display:flex;flex-direction:column;background:#fff;border:1px solid #E2EAF6;border-radius:20px;overflow:hidden;transition:transform .25s,box-shadow .25s" style-hover="transform:translateY(-5px);box-shadow:0 22px 46px rgba(9,40,85,.12)">
+            <div role="img" aria-label="Imagen del artículo" style="height:200px;background-color:#DCE7F7;background-size:cover;background-position:center;background-image:{{ b.photoCss }}"></div>
+            <div style="display:flex;flex-direction:column;flex:1 1 auto;padding:24px">
+              <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+                <span style="font:700 11px Montserrat,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#0B5FD4;background:#EEF4FF;border-radius:999px;padding:6px 11px">{{ b.cat }}</span>
+                <span style="font:500 12px Montserrat,sans-serif;color:#7A90B0">{{ b.date }} · {{ b.read }}</span>
+              </div>
+              <h3 style="margin:0 0 10px;font:800 18px/1.3 Montserrat,sans-serif;color:#0C1B33;text-wrap:pretty">{{ b.title }}</h3>
+              <p style="margin:0 0 20px;font:500 14px/1.7 Montserrat,sans-serif;color:#4A6180;flex:1 1 auto">{{ b.excerpt }}</p>
+              <button type="button" onClick="{{ b.open }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font:700 14px Montserrat,sans-serif;color:#0B5FD4;background:transparent;border:none;padding:10px 0;cursor:pointer;min-height:44px;transition:gap .2s" style-hover="gap:14px">
+                Ver más<i data-lucide="arrow-right" width="17" height="17" stroke-width="2"></i>
+              </button>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ blogOpen }}">
+    <div style="position:fixed;inset:0;z-index:70;background:#fff;overflow-y:auto;animation:popIn .3s ease both">
+      <div style="position:sticky;top:0;z-index:2;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid #E8EEF7">
+        <div style="max-width:1220px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:16px">
+          <img src="assets/logo-cde.jpeg" alt="Logo Fumigación CDE" style="height:54px;width:54px;border-radius:50%;object-fit:cover;display:block">
+          <p style="margin:0;font:700 12px Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#5A7296">Blog técnico</p>
+          <button type="button" onClick="{{ closeBlog }}" style="margin-left:auto;display:inline-flex;align-items:center;gap:9px;font:700 13px Montserrat,sans-serif;color:#0C1B33;background:#F2F6FC;border:none;border-radius:999px;padding:13px 20px;cursor:pointer;min-height:46px;transition:background .2s" style-hover="background:#E1EAF7">
+            <i data-lucide="arrow-left" width="17" height="17" stroke-width="2"></i>Volver a la web
+          </button>
+        </div>
+      </div>
+
+      <sc-if value="{{ showBlogIndex }}">
+        <div style="max-width:1220px;margin:0 auto;padding:clamp(32px,4vw,56px) 18px clamp(48px,6vw,80px)">
+          <h2 style="margin:0 0 10px;font:800 clamp(26px,3.4vw,40px)/1.1 Montserrat,sans-serif;letter-spacing:-.02em">Todos los artículos</h2>
+          <p style="margin:0 0 32px;font:500 15px/1.7 Montserrat,sans-serif;color:#4A6180;max-width:56ch">Guías de prevención, cuidado del patrimonio y normativa sanitaria, escritas por el equipo técnico de Fumigación CDE.</p>
+          <div style="display:grid;gap:16px">
+            <sc-for list="{{ posts }}" as="b">
+              <article style="display:flex;gap:22px;flex-wrap:wrap;background:#fff;border:1px solid #E2EAF6;border-radius:20px;overflow:hidden;transition:box-shadow .25s" style-hover="box-shadow:0 20px 44px rgba(9,40,85,.1)">
+                <div role="img" aria-label="Imagen del artículo" style="flex:1 1 260px;min-height:190px;background-color:#DCE7F7;background-size:cover;background-position:center;background-image:{{ b.photoCss }}"></div>
+                <div style="flex:2 1 340px;display:flex;flex-direction:column;padding:24px">
+                  <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+                    <span style="font:700 11px Montserrat,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#0B5FD4;background:#EEF4FF;border-radius:999px;padding:6px 11px">{{ b.cat }}</span>
+                    <span style="font:500 12px Montserrat,sans-serif;color:#7A90B0">{{ b.date }} · {{ b.read }}</span>
+                  </div>
+                  <h3 style="margin:0 0 10px;font:800 20px/1.3 Montserrat,sans-serif;color:#0C1B33;text-wrap:pretty">{{ b.title }}</h3>
+                  <p style="margin:0 0 18px;font:500 14px/1.7 Montserrat,sans-serif;color:#4A6180;flex:1 1 auto">{{ b.excerpt }}</p>
+                  <button type="button" onClick="{{ b.open }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font:700 14px Montserrat,sans-serif;color:#0B5FD4;background:transparent;border:none;padding:10px 0;cursor:pointer;min-height:44px;transition:gap .2s" style-hover="gap:14px">
+                    Leer el artículo<i data-lucide="arrow-right" width="17" height="17" stroke-width="2"></i>
+                  </button>
+                </div>
+              </article>
+            </sc-for>
+          </div>
+          <div style="margin-top:28px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:#F6F9FE;border:1px dashed #C3D6F0;border-radius:18px;padding:22px 24px">
+            <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:#EEF4FF;color:#0B5FD4;flex:0 0 auto"><i data-lucide="pen-line" width="20" height="20" stroke-width="2"></i></span>
+            <p style="margin:0;font:600 14px/1.6 Montserrat,sans-serif;color:#41577A;flex:1 1 240px">Publicamos un artículo nuevo cada mes. Los próximos temas se suman en este mismo listado.</p>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showBlogPost }}">
+        <article style="max-width:820px;margin:0 auto;padding:clamp(28px,4vw,52px) 18px clamp(48px,6vw,88px)">
+          <button type="button" onClick="{{ backToIndex }}" style="display:inline-flex;align-items:center;gap:8px;font:700 13px Montserrat,sans-serif;color:#5A7296;background:transparent;border:none;padding:10px 0;margin-bottom:18px;cursor:pointer;min-height:44px;transition:color .2s" style-hover="color:#0B5FD4">
+            <i data-lucide="arrow-left" width="16" height="16" stroke-width="2"></i>Todos los artículos
+          </button>
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
+            <span style="font:700 11px Montserrat,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#0B5FD4;background:#EEF4FF;border-radius:999px;padding:6px 11px">{{ currentPost.cat }}</span>
+            <span style="font:500 12px Montserrat,sans-serif;color:#7A90B0">{{ currentPost.date }} · {{ currentPost.read }}</span>
+          </div>
+          <h1 style="margin:0 0 22px;font:800 clamp(26px,3.6vw,40px)/1.14 Montserrat,sans-serif;letter-spacing:-.02em;color:#0C1B33;text-wrap:pretty">{{ currentPost.title }}</h1>
+          <div role="img" aria-label="Imagen del artículo" style="height:clamp(220px,32vw,380px);border-radius:20px;margin-bottom:28px;background-color:#DCE7F7;background-size:cover;background-position:center;background-image:{{ currentPost.photoCss }}"></div>
+          <div style="display:grid;gap:20px">
+            <sc-for list="{{ currentPost.body }}" as="par">
+              <p style="margin:0;font:500 16px/1.85 Montserrat,sans-serif;color:#26364F">{{ par }}</p>
+            </sc-for>
+          </div>
+          <div style="margin-top:34px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:#08152A;border-radius:20px;padding:24px 26px">
+            <div style="flex:1 1 240px">
+              <p style="margin:0;font:700 16px Montserrat,sans-serif;color:#fff">¿Querés una revisión de tu propiedad?</p>
+              <p style="margin:5px 0 0;font:500 13px Montserrat,sans-serif;color:#A9C2E4">La inspección de 8 puntos es sin costo ni compromiso.</p>
+            </div>
+            <button type="button" onClick="{{ openInspection }}" style="display:inline-flex;align-items:center;gap:9px;font:700 14px Montserrat,sans-serif;color:#08152A;background:#fff;border:none;border-radius:999px;padding:14px 22px;cursor:pointer;min-height:48px;transition:transform .2s" style-hover="transform:translateY(-2px)">
+              <i data-lucide="scan-search" width="17" height="17" stroke-width="2"></i>Solicitar inspección
+            </button>
+          </div>
+        </article>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <section id="faq" style="background:#fff">
+    <div style="max-width:900px;margin:0 auto;padding:clamp(48px,6vw,88px) 18px">
+      <div data-reveal="1" style="margin-bottom:26px">
+        <p style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font:700 11px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#0B5FD4"><i data-lucide="circle-help" width="15" height="15" stroke-width="2.2"></i>Preguntas frecuentes</p>
+        <h2 style="margin:0;font:800 clamp(24px,3.2vw,36px)/1.12 Montserrat,sans-serif;letter-spacing:-.02em">Todo lo que suelen consultarnos</h2>
+      </div>
+      <div style="display:grid;gap:10px">
+        <sc-for list="{{ faqs }}" as="item" hint-placeholder-count="6">
+          <div style="border:1px solid #E4EBF5;border-radius:16px;background:#fff;overflow:hidden;transition:border-color .2s" style-hover="border-color:#C3D6F0">
+            <button type="button" onClick="{{ item.toggle }}" style="width:100%;display:flex;gap:16px;align-items:center;justify-content:space-between;text-align:left;background:transparent;border:none;padding:20px;cursor:pointer;min-height:56px">
+              <span style="font:700 15px/1.45 Montserrat,sans-serif;color:#0C1B33">{{ item.q }}</span>
+              <i data-lucide="{{ item.icon }}" width="20" height="20" stroke-width="2.2" style="color:#0B5FD4;flex:0 0 auto"></i>
+            </button>
+            <sc-if value="{{ item.open }}">
+              <p style="margin:0;padding:0 20px 22px;font:500 14px/1.75 Montserrat,sans-serif;color:#4A6180;animation:popIn .25s ease both">{{ item.a }}</p>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:#08152A;color:#fff">
+    <div style="max-width:1220px;margin:0 auto;padding:clamp(40px,5vw,72px) 18px;display:grid;gap:34px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+      <div>
+        <img src="assets/logo-cde.jpeg" alt="Logo Fumigación CDE" style="height:76px;width:76px;border-radius:50%;object-fit:cover;display:block">
+        <p style="margin:18px 0 0;font:500 14px/1.7 Montserrat,sans-serif;color:#A9C2E4;max-width:36ch">Manejo integrado de plagas urbanas en Ciudad del Este, Hernandarias, Presidente Franco y Minga Guazú.</p>
+        <div style="display:flex;gap:10px;margin-top:20px">
+          <a href="https://wa.me/595971914504" aria-label="WhatsApp" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.22);border-radius:12px;color:#fff;transition:all .2s" style-hover="background:rgba(255,255,255,.1)"><i data-lucide="message-circle" width="19" height="19" stroke-width="2"></i></a>
+          <a href="#top" aria-label="Instagram" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.22);border-radius:12px;color:#fff;transition:all .2s" style-hover="background:rgba(255,255,255,.1)"><i data-lucide="instagram" width="19" height="19" stroke-width="2"></i></a>
+          <a href="#top" aria-label="Facebook" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.22);border-radius:12px;color:#fff;transition:all .2s" style-hover="background:rgba(255,255,255,.1)"><i data-lucide="facebook" width="19" height="19" stroke-width="2"></i></a>
+        </div>
+      </div>
+      <div>
+        <p style="margin:0 0 14px;font:800 11px Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8FB6F0">Contacto</p>
+        <p style="margin:0 0 8px;display:flex;gap:9px;align-items:center;font:700 17px Montserrat,sans-serif;color:#fff"><i data-lucide="phone" width="17" height="17" stroke-width="2" style="color:#8FB6F0"></i>+595 971 914 504</p>
+        <p style="margin:0 0 16px;display:flex;gap:9px;align-items:center;font:500 14px Montserrat,sans-serif;color:#A9C2E4"><i data-lucide="mail" width="17" height="17" stroke-width="2" style="color:#8FB6F0"></i>comercial@fumigacion.com.py</p>
+        <p style="margin:0;font:500 14px/1.7 Montserrat,sans-serif;color:#A9C2E4">Lunes a sábado · 08:00 a 18:00</p>
+      </div>
+      <div>
+        <p style="margin:0 0 14px;font:800 11px Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8FB6F0">Secciones</p>
+        <div style="display:grid;gap:10px">
+          <a href="#planes" style="font:500 14px Montserrat,sans-serif;color:#DCE7F7">Planes y precios</a>
+          <a href="#como" style="font:500 14px Montserrat,sans-serif;color:#DCE7F7">Cómo funciona</a>
+          <a href="#plagas" style="font:500 14px Montserrat,sans-serif;color:#DCE7F7">Plagas que controlamos</a>
+          <a href="#blog" style="font:500 14px Montserrat,sans-serif;color:#DCE7F7">Blog técnico</a>
+          <a href="#faq" style="font:500 14px Montserrat,sans-serif;color:#DCE7F7">Preguntas frecuentes</a>
+          <a href="Aegis-Care-Club.dc.html" style="font:500 14px Montserrat,sans-serif;color:#E9CE86">AEGIS Care Club</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1)">
+      <div style="max-width:1220px;margin:0 auto;padding:18px;display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between;align-items:center">
+        <p style="margin:0;font:500 12px Montserrat,sans-serif;color:#7E97BC">© 2026 Fumigación CDE · Ciudad del Este, Alto Paraná</p>
+        <p style="margin:0;font:500 12px Montserrat,sans-serif;color:#7E97BC">Desarrollado por <a href="https://www.dotik.com.py" style="color:#DCE7F7;font-weight:700">Dotik</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/595971914504" aria-label="Escribir por WhatsApp" style="position:fixed;right:16px;bottom:16px;z-index:50;display:flex;align-items:center;gap:9px;background:#16794D;color:#fff;border-radius:999px;padding:14px 20px;font:700 14px Montserrat,sans-serif;box-shadow:0 14px 34px rgba(6,70,44,.4);min-height:52px;transition:transform .2s" style-hover="transform:translateY(-3px)">
+    <i data-lucide="message-circle" width="19" height="19" stroke-width="2.2"></i>WhatsApp
+  </a>
+
+  <sc-if value="{{ modalOpen }}">
+    <div role="dialog" aria-modal="true" style="position:fixed;inset:0;z-index:60;background:rgba(6,16,32,.74);backdrop-filter:blur(5px);display:flex;overflow-y:auto;-webkit-overflow-scrolling:touch;justify-content:center;padding:16px;overflow-y:auto">
+      <div style="width:100%;max-width:540px;margin:auto;background:#fff;border-radius:22px;padding:clamp(22px,3vw,32px);animation:popIn .26s ease both;box-shadow:0 30px 80px rgba(4,14,30,.5)">
+        <div style="display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:6px">
+          <div>
+            <p style="margin:0 0 8px;display:flex;align-items:center;gap:7px;font:700 10px Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#0B5FD4"><i data-lucide="{{ modalBadgeIcon }}" width="14" height="14" stroke-width="2.4"></i>{{ modalBadge }}</p>
+            <h3 style="margin:0;font:800 clamp(19px,2.2vw,24px)/1.2 Montserrat,sans-serif;color:#0C1B33">{{ modalTitle }}</h3>
+          </div>
+          <button type="button" onClick="{{ closeModal }}" aria-label="Cerrar" style="display:flex;align-items:center;justify-content:center;background:#F2F6FC;border:none;border-radius:12px;width:44px;height:44px;color:#41577A;cursor:pointer;flex:0 0 auto;transition:background .2s" style-hover="background:#E1EAF7"><i data-lucide="x" width="20" height="20" stroke-width="2.2"></i></button>
+        </div>
+
+        <sc-if value="{{ showSteps }}">
+          <div style="display:flex;gap:8px;margin:18px 0 22px">
+            <span style="flex:1;height:5px;border-radius:99px;background:{{ step1Bg }};transition:background .3s"></span>
+            <span style="flex:1;height:5px;border-radius:99px;background:{{ step2Bg }};transition:background .3s"></span>
+            <span style="flex:1;height:5px;border-radius:99px;background:{{ step3Bg }};transition:background .3s"></span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showPay }}">
+          <div style="animation:slideStep .3s ease both">
+            <div style="border:1px solid #E2EAF6;border-radius:16px;padding:18px;background:#F6F9FE;margin-bottom:18px">
+              <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
+                <p style="margin:0;font:700 14px Montserrat,sans-serif;color:#0C1B33">{{ planName }}</p>
+                <p style="margin:0;font:900 20px Montserrat,sans-serif;color:#0B5FD4">{{ planPrice }}</p>
+              </div>
+              <p style="margin:6px 0 0;font:500 12px Montserrat,sans-serif;color:#5A7296">{{ planDaily }} · débito automático mensual</p>
+            </div>
+            <div style="border:1.5px dashed #C3D6F0;border-radius:16px;padding:22px;text-align:center;background:#fff;margin-bottom:18px">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:14px;background:#EEF4FF;color:#0B5FD4;margin-bottom:12px"><i data-lucide="lock" width="22" height="22" stroke-width="2"></i></span>
+              <p style="margin:0 0 6px;font:800 13px Montserrat,sans-serif;letter-spacing:.06em;color:#0C1B33">AQUÍ VA LA PASARELA DE PAGO BANCARD</p>
+              <p style="margin:0;font:500 12px/1.6 Montserrat,sans-serif;color:#5A7296">Espacio reservado para el iframe/redirección de Bancard (tarjeta 1x1, tokenización PCI-DSS). Esta demo simula la respuesta de la pasarela.</p>
+            </div>
+            <button type="button" onClick="{{ payNow }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#fff;background:#0B5FD4;border:none;border-radius:14px;padding:16px;cursor:pointer;min-height:54px;transition:background .2s" style-hover="background:#083F8F">
+              <i data-lucide="credit-card" width="18" height="18" stroke-width="2"></i>Pagar y activar mi plan
+            </button>
+            <p style="margin:12px 0 0;display:flex;gap:7px;align-items:center;justify-content:center;font:500 11px Montserrat,sans-serif;color:#7A90B0"><i data-lucide="shield-check" width="14" height="14" stroke-width="2"></i>Transacción encriptada · Fumigación CDE no almacena tu tarjeta</p>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showProcessing }}">
+          <div style="padding:34px 10px;text-align:center;animation:popIn .2s ease both">
+            <span style="display:inline-block;width:48px;height:48px;border-radius:50%;border:3px solid #DCE7F7;border-top-color:#0B5FD4;animation:spinSlow .9s linear infinite"></span>
+            <p style="margin:20px 0 0;font:700 15px Montserrat,sans-serif;color:#0C1B33">Procesando el pago…</p>
+            <p style="margin:6px 0 0;font:500 13px Montserrat,sans-serif;color:#5A7296">Validando con Bancard</p>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showConfirm }}">
+          <div style="animation:popIn .3s ease both;text-align:center;padding:10px 0 0">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:70px;height:70px;border-radius:50%;background:#EAF7F0;color:#16794D;margin-bottom:16px"><i data-lucide="check" width="34" height="34" stroke-width="3"></i></span>
+            <h4 style="margin:0 0 8px;font:800 20px Montserrat,sans-serif;color:#0C1B33">Pago aprobado</h4>
+            <p style="margin:0 0 18px;font:500 14px/1.65 Montserrat,sans-serif;color:#4A6180">Confirmación simulada de Bancard para {{ planName }}. Ya sos parte del sistema de protección 365.</p>
+            <div style="text-align:left;border:1px solid #E2EAF6;border-radius:14px;padding:16px;background:#F6F9FE;margin-bottom:18px;display:grid;gap:8px">
+              <p style="margin:0;display:flex;justify-content:space-between;font:600 13px Montserrat,sans-serif;color:#41577A">Comprobante <span style="color:#0C1B33">SIM-000{{ receiptNo }}</span></p>
+              <p style="margin:0;display:flex;justify-content:space-between;font:600 13px Montserrat,sans-serif;color:#41577A">Plan <span style="color:#0C1B33">{{ planName }}</span></p>
+              <p style="margin:0;display:flex;justify-content:space-between;font:600 13px Montserrat,sans-serif;color:#41577A">Monto <span style="color:#0C1B33">{{ planPrice }}</span></p>
+            </div>
+            <button type="button" onClick="{{ nextStep }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#fff;background:#0B5FD4;border:none;border-radius:14px;padding:16px;cursor:pointer;min-height:54px;transition:background .2s" style-hover="background:#083F8F">
+              Continuar<i data-lucide="arrow-right" width="18" height="18" stroke-width="2"></i>
+            </button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showLeadForm }}">
+          <form onSubmit="{{ submitForm }}" style="display:grid;gap:13px;animation:slideStep .3s ease both">
+            <p style="margin:0 0 2px;font:500 13px/1.6 Montserrat,sans-serif;color:#4A6180">{{ formNote }}</p>
+            <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Nombre y apellido
+              <input type="text" required="required" placeholder="Ej. María José Gómez" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF;transition:border-color .2s" style-focus="border-color:#0B5FD4;outline:none">
+            </label>
+            <div style="display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+              <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Cédula de identidad / RUC
+                <input type="text" required="required" placeholder="Ej. 4.512.880 / 80012345-6" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+              </label>
+              <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">WhatsApp
+                <input type="tel" required="required" placeholder="+595 9xx xxx xxx" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+              </label>
+            </div>
+            <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Correo electrónico
+              <input type="email" required="required" placeholder="nombre@correo.com" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+            </label>
+            <div style="display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+              <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Ciudad
+                <input type="text" required="required" placeholder="Ciudad del Este" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+              </label>
+              <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Barrio / zona
+                <input type="text" required="required" placeholder="Ej. Área 1, Km 4" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+              </label>
+            </div>
+            <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Dirección o referencia
+              <input type="text" placeholder="Calle, número y referencia" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+            </label>
+            <button type="submit" style="display:flex;align-items:center;justify-content:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#fff;background:#0B5FD4;border:none;border-radius:14px;padding:16px;cursor:pointer;min-height:54px;transition:background .2s" style-hover="background:#083F8F">
+              <i data-lucide="send" width="18" height="18" stroke-width="2"></i>{{ formCta }}
+            </button>
+          </form>
+        </sc-if>
+
+        <sc-if value="{{ showEmpresaForm }}">
+          <form onSubmit="{{ submitForm }}" style="display:grid;gap:13px;animation:slideStep .3s ease both">
+            <p style="margin:0 0 2px;font:500 13px/1.6 Montserrat,sans-serif;color:#4A6180">Los planes para empresas están sujetos a cotización. Contanos sobre tu operación y un técnico agenda la auditoría inicial sin cargo.</p>
+            <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Razón social / nombre de fantasía
+              <input type="text" required="required" placeholder="Ej. Restaurante Paraná S.A." style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+            </label>
+            <div style="display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+              <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">RUC
+                <input type="text" required="required" placeholder="80012345-6" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+              </label>
+              <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Rubro
+                <input type="text" required="required" placeholder="Gastronomía, depósito, clínica…" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+              </label>
+            </div>
+            <div style="display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+              <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Superficie aproximada
+                <input type="text" placeholder="Ej. 400 m²" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+              </label>
+              <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Ciudad y barrio
+                <input type="text" required="required" placeholder="Ciudad del Este, Área 1" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+              </label>
+            </div>
+            <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Responsable y WhatsApp
+              <input type="text" required="required" placeholder="Nombre · +595 9xx xxx xxx" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+            </label>
+            <label style="display:grid;gap:6px;font:700 12px Montserrat,sans-serif;color:#2B4A76">Correo corporativo
+              <input type="email" required="required" placeholder="compras@empresa.com.py" style="font:500 15px Montserrat,sans-serif;color:#0C1B33;border:1px solid #D5E1F2;border-radius:12px;padding:14px;min-height:48px;background:#FBFDFF" style-focus="border-color:#0B5FD4;outline:none">
+            </label>
+            <button type="submit" style="display:flex;align-items:center;justify-content:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#fff;background:#0C1B33;border:none;border-radius:14px;padding:16px;cursor:pointer;min-height:54px;transition:background .2s" style-hover="background:#1B3054">
+              <i data-lucide="send" width="18" height="18" stroke-width="2"></i>Solicitar cotización
+            </button>
+          </form>
+        </sc-if>
+
+        <sc-if value="{{ showDone }}">
+          <div style="text-align:center;padding:12px 0 4px;animation:popIn .3s ease both">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:70px;height:70px;border-radius:50%;background:#EAF7F0;color:#16794D;margin-bottom:16px"><i data-lucide="message-circle" width="32" height="32" stroke-width="2.4"></i></span>
+            <h4 style="margin:0 0 8px;font:800 20px Montserrat,sans-serif;color:#0C1B33">¡Listo! Datos registrados</h4>
+            <p style="margin:0 0 20px;font:500 14px/1.7 Montserrat,sans-serif;color:#4A6180;max-width:42ch;margin-left:auto;margin-right:auto">Nos comunicaremos por WhatsApp para coordinar el día y la hora de la visita técnica. Guardá nuestro número: +595 971 914 504.</p>
+            <div style="display:grid;gap:10px">
+              <a href="https://wa.me/595971914504" style="display:flex;align-items:center;justify-content:center;gap:9px;font:700 15px Montserrat,sans-serif;color:#fff;background:#16794D;border-radius:14px;padding:16px;min-height:54px"><i data-lucide="message-circle" width="18" height="18" stroke-width="2"></i>Escribir ahora por WhatsApp</a>
+              <button type="button" onClick="{{ closeModal }}" style="font:700 14px Montserrat,sans-serif;color:#41577A;background:transparent;border:none;padding:12px;cursor:pointer;min-height:44px" style-hover="color:#0B5FD4">Cerrar</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280},&quot;defaultScope&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;todos&quot;,&quot;options&quot;:[&quot;todos&quot;,&quot;hogar&quot;,&quot;empresas&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Planes&quot;},&quot;showClientStrip&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Secciones&quot;}}">
+class Component extends DCLogic {
+  state = {
+    scope: (this.props && this.props.defaultScope) || 'todos',
+    mobile: typeof window !== 'undefined' ? window.innerWidth < 900 : false,
+    menuOpen: false,
+    flow: null,
+    step: 1,
+    openFaq: -1,
+    receipt: 4821,
+    blogOpen: false,
+    post: -1
+  };
+
+  pests = [
+    { name: 'Cucarachas', note: 'Gel inodoro y barrido perimetral', icon: 'bug' },
+    { name: 'Alacranes', note: 'Bloqueo de desagües y registros', icon: 'triangle-alert' },
+    { name: 'Mosquitos', note: 'Control de criaderos y nebulización', icon: 'droplets' },
+    { name: 'Roedores', note: 'Control de ratas y ratones', icon: 'rat' },
+    { name: 'Termitas (kupi\u2019i)', note: 'Inoculación de maderas y tirantes', icon: 'tree-pine' },
+    { name: 'Hormigas', note: 'Tratamiento de nidos y senderos', icon: 'workflow' },
+    { name: 'Arañas', note: 'Desinsectación de aleros y depósitos', icon: 'bug-off' },
+    { name: 'Moscas', note: 'Trampas de luz UV para comercios', icon: 'lightbulb' }
+  ];
+
+  compareData = [
+    { criterio: 'Enfoque', tradicional: 'Actúa cuando la plaga ya invadió la propiedad.', sistema: 'Previene la nidificación antes de cada estación.' },
+    { criterio: 'Seguridad sanitaria', tradicional: 'Aplicaciones de impacto sin enfoque reactivo.', sistema: 'Productos autorizados y enfoque preventivo.' },
+    { criterio: 'Duración', tradicional: 'La cobertura dura algunos meses.', sistema: 'Blindaje en las 4 estaciones del año.' },
+    { criterio: 'Costo', tradicional: 'Desembolsos altos e imprevistos, varias aplicaciones.', sistema: 'Cuota mensual fija desde 200.000 Gs, revisiones incluidas.' }
+  ];
+
+  faqData = [
+    { q: '¿Es seguro para mis hijos y mascotas?', a: 'Sí. Usamos formulaciones autorizadas por el MSPyBS y entregamos el protocolo de seguridad con los plazos de reingreso. Durante la aplicación ninguna persona ni mascota debe permanecer en el área tratada.' },
+    { q: '¿Cómo se paga el plan?', a: 'Por débito automático mediante la pasarela encriptada de Bancard. El primer cobro se procesa al activar el plan y los siguientes de forma automática cada mes. No almacenamos los datos de tu tarjeta.' },
+    { q: '¿Hay contrato de permanencia?', a: 'Se establece un compromiso inicial de 6 meses para lograr un ecosistema estable. Después de ese plazo podés cancelar la suscripción cuando quieras.' },
+    { q: '¿Qué pasa si aparece una plaga entre visitas?', a: 'Activás la Garantía 365: nos avisás por WhatsApp y enviamos un equipo de refuerzo en menos de 48 horas, sin costo adicional.' },
+    { q: '¿Puedo contratar un solo servicio, sin plan?', a: 'Sí. Elegí la opción “Necesito un servicio ya, por única vez”, dejanos tus datos y coordinamos la visita puntual por WhatsApp con presupuesto cerrado.' },
+    { q: '¿Trabajan con empresas y comercios?', a: 'Sí. El Plan 3 está sujeto a cotización: hacemos una auditoría técnica en sitio sin cargo y emitimos carpeta sanitaria y certificado para entes reguladores.' }
+  ];
+
+  postData = [
+    {
+      title: 'Alacranes en Ciudad del Este: por qué aparecen en verano y cómo bloquear su ingreso',
+      excerpt: 'Con las lluvias y el calor del Alto Paraná, los alacranes buscan refugio en desagües, rejillas y cámaras de inspección. Te mostramos los cinco puntos de entrada que revisamos en cada domicilio y qué podés hacer esta misma semana.',
+      cat: 'Prevención',
+      date: '12 de septiembre, 2026',
+      read: '6 min de lectura',
+      photoCss: 'url(assets/cde-jardin.jpeg)',
+      body: [
+        'El alacrán no invade una casa por casualidad: sigue humedad, sombra y una fuente de alimento. En Ciudad del Este, los meses de mayor actividad coinciden con las lluvias de octubre a marzo, cuando las cámaras de inspección y los desagües se convierten en corredores de circulación entre la vereda y el interior de la vivienda.',
+        'En nuestras inspecciones de 8 puntos, el 70% de los ingresos detectados se concentran en cuatro lugares: rejillas de piso sin sifón, cámaras de inspección con tapa rota, el encuentro entre el muro perimetral y el piso del patio, y las cajas de medidores. Son puntos que se resuelven con barreras físicas simples más una aplicación residual dirigida.',
+        'La recomendación práctica: revisá que cada rejilla interior tenga tapa metálica o mosquitero, sacudí el calzado que estuvo en el patio y evitá acumular escombros o leña contra la pared de la casa. Si ya viste un ejemplar dentro, no aplique insecticida doméstico en spray: los dispersa hacia dormitorios en lugar de eliminarlos.'
+      ]
+    },
+    {
+      title: 'Termitas de madera seca (kupi\u2019i): cómo proteger el quincho antes de que sea tarde',
+      excerpt: 'Las termitas trabajan meses sin dejar señales visibles. Cuando aparece el primer polvillo bajo una viga, la colonia ya está establecida. Explicamos cómo funciona la inoculación preventiva y por qué el quincho es el punto más vulnerable.',
+      cat: 'Patrimonio',
+      date: '28 de agosto, 2026',
+      read: '5 min de lectura',
+      photoCss: 'url(assets/cde-quincho.jpeg)',
+      body: [
+        'El kupi\u2019i se alimenta de la celulosa de la madera trabajando desde el interior hacia afuera, lo que hace que una viga pueda perder gran parte de su resistencia estructural antes de mostrar daño en la superficie. La primera señal suele ser un polvillo fino acumulado en el piso, debajo de tirantes o marcos.',
+        'En quinchos y galerías el riesgo es mayor por tres motivos: la madera suele estar sin tratar o con el tratamiento vencido, está expuesta a ciclos de humedad y secado, y muchas veces apoya directamente sobre mampostería que transmite humedad por capilaridad.',
+        'La inoculación preventiva consiste en perforaciones milimétricas en puntos calculados de cada pieza, por donde se inyecta el producto autorizado que se distribuye por los conductos internos de la madera. El trabajo es reversible a la vista: se sellan los orificios y el acabado queda intacto. Hecho a tiempo, cuesta una fracción de lo que cuesta reemplazar tirantes.'
+      ]
+    }
+  ];
+
+  componentDidMount() {
+    this.mq = window.matchMedia('(max-width: 899px)');
+    this.onMq = (e) => this.setState({ mobile: e.matches, menuOpen: false });
+    this.mq.addEventListener('change', this.onMq);
+    this.setState({ mobile: this.mq.matches });
+    this.io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          this.reveal(en.target);
+          this.io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('[data-reveal="1"]').forEach((el) => { delete el.dataset.revealed; });
+    this.onVis = () => { if (document.visibilityState !== 'visible') this.revealAllPending(); };
+    document.addEventListener('visibilitychange', this.onVis);
+    this.syncDom();
+  }
+
+  componentDidUpdate() {
+    this.syncDom();
+    const lock = !!(this.state.flow || this.state.blogOpen || (this.state.menuOpen && this.state.mobile));
+    if (lock !== this.scrollLocked) {
+      this.scrollLocked = lock;
+      document.body.style.overflow = lock ? 'hidden' : '';
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.mq) this.mq.removeEventListener('change', this.onMq);
+    if (this.onVis) document.removeEventListener('visibilitychange', this.onVis);
+    if (this.io) this.io.disconnect();
+  }
+
+  reveal(el) {
+    el.dataset.revealed = 'done';
+    if (el.getAnimations) el.getAnimations().forEach((an) => an.cancel());
+    el.style.animation = '';
+    el.style.opacity = '1';
+    if (document.visibilityState === 'visible') {
+      el.style.animation = 'revealUp .7s cubic-bezier(.22,.8,.2,1)';
+    }
+  }
+
+  revealAllPending() {
+    document.querySelectorAll('[data-reveal="1"]').forEach((el) => {
+      if (el.dataset.revealed !== 'done') this.reveal(el);
+    });
+  }
+
+  syncDom() {
+    if (window.lucide) window.lucide.createIcons();
+    if (!this.io) return;
+    if (document.visibilityState !== 'visible') { this.revealAllPending(); return; }
+    document.querySelectorAll('[data-reveal="1"]').forEach((el) => {
+      if (el.dataset.revealed) return;
+      el.dataset.revealed = 'pending';
+      el.style.opacity = '0';
+      this.io.observe(el);
+      setTimeout(() => { if (el.dataset.revealed === 'pending') this.reveal(el); }, 900);
+    });
+  }
+
+  pill(active) {
+    return active ? { bg: '#0B5FD4', color: '#ffffff' } : { bg: 'transparent', color: '#41577A' };
+  }
+
+  plans = {
+    p1: { name: 'Plan 1 · Escudo Residencial', price: '200.000 Gs / mes', daily: 'equivale a 6.600 Gs por día' },
+    p2: { name: 'Plan 2 · Protección Country', price: '300.000 Gs / mes', daily: 'equivale a 10.000 Gs por día' }
+  };
+
+  open(flow, plan) {
+    this.setState({ flow: flow, step: 1, plan: plan || null, menuOpen: false });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const all = this.pill(s.scope === 'todos');
+    const home = this.pill(s.scope === 'hogar');
+    const biz = this.pill(s.scope === 'empresas');
+    const plan = s.plan ? this.plans[s.plan] : this.plans.p1;
+    const isPlan = s.flow === 'plan';
+    const stepBg = (n) => (s.step >= n ? '#0B5FD4' : '#E2EAF6');
+    const notes = {
+      plan: 'Último paso: confirmamos tus datos para coordinar la primera aplicación por WhatsApp.',
+      inspeccion: 'Un técnico evalúa 8 puntos críticos de tu propiedad sin costo ni compromiso.',
+      puntual: 'Servicio único, sin plan ni permanencia. Coordinamos la visita y el presupuesto cerrado por WhatsApp.'
+    };
+    const titles = {
+      plan: s.step === 1 ? 'Pago de tu plan' : (s.step === 1.5 ? 'Procesando el pago' : (s.step === 2 ? 'Confirmación de pago' : 'Coordinemos tu primera visita')),
+      inspeccion: 'Solicitar inspección gratuita',
+      puntual: 'Solicitar servicio puntual',
+      empresa: 'Cotización para empresas'
+    };
+    const badges = {
+      plan: { t: 'Suscripción Bancard', i: 'credit-card' },
+      inspeccion: { t: '8 puntos · sin costo', i: 'scan-search' },
+      puntual: { t: 'Servicio por única vez', i: 'zap' },
+      empresa: { t: 'Sujeto a cotización', i: 'building-2' }
+    };
+    const badge = badges[s.flow] || badges.plan;
+
+    return {
+      isMobile: s.mobile,
+      isDesktop: !s.mobile,
+      menuOpen: s.mobile && s.menuOpen,
+      menuIcon: s.menuOpen ? 'x' : 'menu',
+      toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+
+      showClients: this.props.showClientStrip !== false,
+      pests: this.pests,
+      reviews: [
+        { initials: 'G', name: 'Gabriela', meta: '2 opiniones · hace 4 meses', text: 'Contraté a este fumigador y tuve una experiencia excelente. Es muy profesional, atento y realmente sabe lo que hace. Un punto que ayudó bastante fue que habla portugués, lo que facilitó mucho la comunicación. El trabajo fue de gran ayuda para mí y mi familia. Lo recomiendo sin dudas.' },
+        { initials: 'HS', name: 'Henrique Santos', meta: '5 opiniones · hace 5 meses', text: 'Realmente me gustó. Llegaron antes e hicieron el trabajo muy bien. Somos brasileños y no sabemos mucho sobre el lugar, y el Sr. Sergio, que hizo el servicio, nos ayudó muchísimo con consejos sobre los barrios.' },
+        { initials: 'AS', name: 'Ana Shudo', meta: 'Local Guide · 180 opiniones · hace un año', text: 'Acabo de mudarme y quedé decepcionada porque había cucarachas acá. Pedí el servicio y me impactó la cantidad que salieron en la cocina. Servicio muy profesional, la persona es muy educada y atenciosa. Después de la limpieza puedo dormir tranquila.' }
+      ],
+      posts: this.postData.map((b, i) => ({
+        title: b.title, excerpt: b.excerpt, cat: b.cat, date: b.date, read: b.read,
+        photoCss: b.photoCss,
+        open: () => this.setState({ blogOpen: true, post: i })
+      })),
+      blogOpen: s.blogOpen,
+      openBlog: () => this.setState({ blogOpen: true, post: -1 }),
+      closeBlog: () => this.setState({ blogOpen: false, post: -1 }),
+      showBlogIndex: s.blogOpen && s.post < 0,
+      showBlogPost: s.blogOpen && s.post >= 0,
+      backToIndex: () => this.setState({ post: -1 }),
+      currentPost: this.postData[s.post] || this.postData[0],
+      gallery: [
+        { photoCss: 'url(assets/cde-cocina.jpeg)', label: 'Cocinas y electrodomésticos', alt: 'Inspección de cocina residencial' },
+        { photoCss: 'url(assets/cde-living.jpeg)', label: 'Aberturas y living', alt: 'Inspección de aberturas en living' },
+        { photoCss: 'url(assets/cde-quincho.jpeg)', label: 'Quinchos y áreas sociales', alt: 'Inspección de quincho y parrilla' },
+        { photoCss: 'url(assets/cde-deposito.jpeg)', label: 'Depósitos y logística', alt: 'Inspección de depósito con estanterías' },
+        { photoCss: 'url(assets/cde-comercio.jpeg)', label: 'Comercios y showrooms', alt: 'Auditoría técnica en showroom' },
+        { photoCss: 'url(assets/cde-industria.jpeg)', label: 'Plantas industriales', alt: 'Equipo ingresando a planta industrial' }
+      ],
+      zones: ['Ciudad del Este', 'Hernandarias', 'Presidente Franco', 'Minga Guazú', 'Paraná Country Club', 'Costa del Lago'],
+      compareRows: this.compareData,
+      faqs: this.faqData.map((f, i) => ({
+        q: f.q, a: f.a,
+        open: s.openFaq === i,
+        icon: s.openFaq === i ? 'minus' : 'plus',
+        toggle: () => this.setState({ openFaq: s.openFaq === i ? -1 : i })
+      })),
+
+      showHome: s.scope !== 'empresas',
+      showBiz: s.scope !== 'hogar',
+      scopeAll: () => this.setState({ scope: 'todos' }),
+      scopeHome: () => this.setState({ scope: 'hogar' }),
+      scopeBiz: () => this.setState({ scope: 'empresas' }),
+      scopeAllBg: all.bg, scopeAllColor: all.color,
+      scopeHomeBg: home.bg, scopeHomeColor: home.color,
+      scopeBizBg: biz.bg, scopeBizColor: biz.color,
+
+      buyPlan1: () => this.open('plan', 'p1'),
+      buyPlan2: () => this.open('plan', 'p2'),
+      openEmpresa: () => this.open('empresa'),
+      openInspection: () => this.open('inspeccion'),
+      openPuntual: () => this.open('puntual'),
+      closeModal: () => this.setState({ flow: null, step: 1 }),
+
+      modalOpen: !!s.flow,
+      modalTitle: titles[s.flow] || '',
+      modalBadge: badge.t,
+      modalBadgeIcon: badge.i,
+      planName: plan.name,
+      planPrice: plan.price,
+      planDaily: plan.daily,
+      receiptNo: s.receipt,
+
+      showSteps: isPlan && s.step < 4,
+      step1Bg: stepBg(1), step2Bg: stepBg(2), step3Bg: stepBg(3),
+      showPay: isPlan && s.step === 1,
+      showProcessing: isPlan && s.step === 1.5,
+      showConfirm: isPlan && s.step === 2,
+      showLeadForm: (isPlan && s.step === 3) || ((s.flow === 'inspeccion' || s.flow === 'puntual') && s.step === 1),
+      showEmpresaForm: s.flow === 'empresa' && s.step === 1,
+      showDone: !!s.flow && s.step === 4,
+      formNote: notes[s.flow] || '',
+      formCta: s.flow === 'plan' ? 'Confirmar datos y coordinar' : (s.flow === 'puntual' ? 'Solicitar servicio ahora' : 'Enviar solicitud'),
+
+      payNow: () => {
+        this.setState({ step: 1.5 });
+        setTimeout(() => this.setState({ step: 2, receipt: 4800 + Math.floor(Math.random() * 199) }), 1500);
+      },
+      nextStep: () => this.setState({ step: 3 }),
+      submitForm: (e) => { e.preventDefault(); this.setState({ step: 4 }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
